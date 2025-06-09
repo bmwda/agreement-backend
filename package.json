@@ -1,0 +1,24 @@
+{
+  "name": "biowaste-backend",
+  "version": "1.0.0",
+  "description": "Backend service for BioWaste document generation",
+  "main": "src/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "docxtemplater": "^3.29.1",
+    "express": "^5.1.0",
+    "mammoth": "^1.9.1",
+    "pizzip": "^3.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
