@@ -96,14 +96,9 @@ router.post("/generate-agreement", (req, res) => {
 
         const buffer = doc.getZip().generate({ type: "nodebuffer" });
 
-        // Save the generated document
-        const outputFileName = `agreement-${facility_code}-${name}.docx`;
-        const outputPath = path.join(PUBLIC_DIR, outputFileName);
-        fs.writeFileSync(outputPath, buffer);
-
         // Set headers for Word document download
         res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-        res.setHeader("Content-Disposition", `attachment; filename=${outputFileName}`);
+        res.setHeader("Content-Disposition", `attachment; filename=agreement-${facility_code}-${name}.docx`);
         res.send(buffer);
     } catch (error) {
         console.error("DOCXTEMPLATER ERROR", error);
