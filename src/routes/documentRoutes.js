@@ -59,7 +59,7 @@ router.post("/generate-agreement", (req, res) => {
 
     try {
         // Select template based on notary/stamp requirement
-        const templateFileName = hasNotaryOrStamp ? "aigh.docx" : "mth.docx";
+        const templateFileName = hasNotaryOrStamp ? "aigh.docx" : "mathura.docx";
         const templatePath = path.join(TEMPLATES_DIR, templateFileName);
         
         if (!fs.existsSync(templatePath)) {

@@ -7,6 +7,17 @@ const documentRoutes = require('./routes/documentRoutes');
 
 const app = express();
 
+// Security headers middleware
+app.use((req, res, next) => {
+  // Set Cross-Origin-Opener-Policy to same-origin
+  res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
+  // Set Cross-Origin-Embedder-Policy to require-corp
+  res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
+  // Set Cross-Origin-Resource-Policy to same-site
+  res.setHeader('Cross-Origin-Resource-Policy', 'same-site');
+  next();
+});
+
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
