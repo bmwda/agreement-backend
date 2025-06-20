@@ -152,18 +152,6 @@ router.post("/generate-agreement", (req, res) => {
         });
 //    console.log(date,month,year,month_name)
         const buffer = doc.getZip().generate({ type: "nodebuffer" });
-
-        // Save a copy of the generated DOCX to the backend
-        const outputDir = path.join(__dirname, '../../generated_docs');
-        if (!fs.existsSync(outputDir)) {
-            fs.mkdirSync(outputDir);
-        }
-        const outputFilePath = path.join(
-            outputDir,
-            `agreement-${facility_code}-${name}-${Date.now()}.docx`
-        );
-        fs.writeFileSync(outputFilePath, buffer);
-
         res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
         res.setHeader("Content-Disposition", `attachment; filename=agreement-${facility_code}-${name}.docx`);
         res.send(buffer);
