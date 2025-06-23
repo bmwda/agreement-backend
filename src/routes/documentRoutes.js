@@ -233,6 +233,10 @@ router.get("/preview-doc", (req, res) => {
                         <label>Has Notary/Stamp:</label>
                         <input type="checkbox" name="hasNotaryOrStamp">
                     </div>
+                    <div class="form-group">
+                        <label>Has GST:</label>
+                        <input type="checkbox" name="hasGST">
+                    </div>
                     <button type="submit">Preview Document</button>
                 </form>
 
@@ -292,7 +296,8 @@ router.post("/preview-doc", async (req, res) => {
         mob,
         hasNotaryOrStamp,
         start_date,
-        end_date
+        end_date,
+        hasGST
     } = req.body;
 
     // Extract date, month, year from start_date
@@ -333,7 +338,13 @@ router.post("/preview-doc", async (req, res) => {
     }
 
     // Convert charge to words
-    const chargeInWords = numberToWords(parseInt(charge));
+    let chargeInWords = numberToWords(parseInt(charge));
+    
+    // Handle GST if applicable
+    if(hasGST){
+        charge = charge +" + 12% GST"
+        chargeInWords = chargeInWords + " and additionally 12% GST"
+    }
 
     // Validate required fields
     const missingFields = REQUIRED_FIELDS.filter(field => !req.body[field]);
