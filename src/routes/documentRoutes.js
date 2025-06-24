@@ -126,7 +126,7 @@ router.post("/generate-agreement", (req, res) => {
         });
         if(hasGST){
             charge = charge +" + 12% GST"
-            chargeInWords = chargeInWords + " and additionally 12% GST"
+            chargeInWords = chargeInWords + " and including 12% GST"
         }
         doc.render({
             city_code,
