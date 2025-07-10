@@ -12,6 +12,7 @@ const ImageModule = require('docxtemplater-image-module-free');
 
 // Generate agreement document
 router.post("/generate-agreement", (req, res) => {
+    console.log("received docs ")
     if (!req.body) {
         return res.status(400).json({ error: "Request body is missing" });
     }
@@ -72,6 +73,14 @@ router.post("/generate-agreement", (req, res) => {
 
     // Convert charge to words
     let chargeInWords = numberToWords(parseInt(charge));
+    let chargeWithGST = charge;
+    let chargeWithGSTInWords = chargeInWords;
+
+    if (hasGST) {
+        // Calculate 12% GST
+        chargeWithGST = Math.round(parseInt(charge) * 1.12);
+        chargeWithGSTInWords = numberToWords(chargeWithGST) + " including 12% GST";
+    }
 
     // Validate required fields
     const missingFields = REQUIRED_FIELDS.filter(field => !req.body[field]);
@@ -89,14 +98,18 @@ router.post("/generate-agreement", (req, res) => {
         let templateFileName;
         const kashganjCities = ['kasganj', 'sambhal', 'badaun', 'narota'];
         const aighCities = ['aligarh', 'hathras'];
-        
-        if (kashganjCities.includes(city.toLowerCase())) {
-            templateFileName = 'kashganj.docx';
-        } else if (aighCities.includes(city.toLowerCase())) {
-            templateFileName = 'aigh.docx';
+        const cityLower = city.toLowerCase();
+
+        if (cityLower === 'aligarh') {
+            templateFileName = hasNotaryOrStamp ? 'aligarh_notary.docx' : 'aligarh.docx';
+        } else if (cityLower === 'mathura') {
+            templateFileName = hasNotaryOrStamp ? 'mathura_notary.docx' : 'mathura.docx';
+        } else if (cityLower === 'hathras') {
+            templateFileName = hasNotaryOrStamp ? 'hathras_notary.docx' : 'hathras.docx';
         } else {
-            templateFileName = hasNotaryOrStamp ? "aigh.docx" : "mathura.docx";
+            throw new Error("Unsupported city. Only Aligarh, Mathura, and Hathras are allowed.");
         }
+        
         const templatePath = path.join(TEMPLATES_DIR, templateFileName);
         
         if (!fs.existsSync(templatePath)) {
@@ -138,8 +151,8 @@ router.post("/generate-agreement", (req, res) => {
             doctor_name,
             hospital,
             count,
-            charge,
-            chargeInWords,
+            charge: hasGST ? chargeWithGST : charge,
+            chargeInWords: hasGST ? chargeWithGSTInWords : chargeInWords,
             mob,
             start_date: formattedStartDate,
             end_date: formattedEndDate,
@@ -366,7 +379,7 @@ router.post("/preview-doc", async (req, res) => {
         if (kashganjCities.includes(city.toLowerCase())) {
             templateFileName = 'kashganj.docx';
         } else if (aighCities.includes(city.toLowerCase())) {
-            templateFileName = 'aigh.docx';
+            templateFileName = hasNotaryOrStamp ? 'aigh.docx' : 'aligh_not.docx';
         } else {
             templateFileName = hasNotaryOrStamp ? "aigh.docx" : "mathura.docx";
         }
@@ -444,4 +457,4 @@ router.post("/preview-doc", async (req, res) => {
     }
 });
 
-module.exports = router; 
+module.exports = router;
