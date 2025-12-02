@@ -138,8 +138,8 @@ router.post("/generate-agreement", (req, res) => {
             modules: [imageModule]
         });
         if(hasGST){
-            charge = charge +" + 12% GST"
-            chargeInWords = chargeInWords + " and including 12% GST"
+            charge = charge +" + 5% GST"
+            chargeInWords = chargeInWords + " and including 5% GST"
         }
         doc.render({
             city_code,
