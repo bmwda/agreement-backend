@@ -77,9 +77,9 @@ router.post("/generate-agreement", (req, res) => {
     let chargeWithGSTInWords = chargeInWords;
 
     if (hasGST) {
-        // Calculate 12% GST
-        chargeWithGST = Math.round(parseInt(charge) * 1.12);
-        chargeWithGSTInWords = numberToWords(chargeWithGST) + " including 12% GST";
+        // Calculate 5% GST
+        chargeWithGST = Math.round(parseInt(charge) * 1.05);
+        chargeWithGSTInWords = numberToWords(chargeWithGST) + " including 5% GST";
     }
 
     // Validate required fields
@@ -355,8 +355,8 @@ router.post("/preview-doc", async (req, res) => {
     
     // Handle GST if applicable
     if(hasGST){
-        charge = charge +" + 12% GST"
-        chargeInWords = chargeInWords + " and additionally 12% GST"
+        charge = charge +" + 5% GST"
+        chargeInWords = chargeInWords + " and additionally 5% GST"
     }
 
     // Validate required fields
