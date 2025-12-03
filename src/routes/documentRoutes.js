@@ -142,6 +142,7 @@ router.post("/generate-agreement", (req, res) => {
             chargeInWords = chargeInWords + " and including 5% GST"
         }
         doc.render({
+            hasGST: hasGST,
             city_code,
             facility_code,
             name,
